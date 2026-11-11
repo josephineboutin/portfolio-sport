@@ -725,7 +725,7 @@
   var text = run.querySelector(".stage-text"), bar = document.querySelector(".bar");
   var f = document.getElementById("hero-ph"), m = document.getElementById("hero-mob");
   var kick = text.querySelector(".pro-kicker") || text, title = text.querySelector(".pro-pos") || text, duo = text.querySelector(".duo") || text.querySelector(".sport-intro");
-  var mode = "", R = 0, stick = 0, T0 = 0, cur = -1, signed = false, lastW = 0;
+  var mode = "", R = 0, stick = 0, T0 = 0, cur = -1, signed = false, lastW = 0, vh0 = 0, vhW = 0;
   var rel0 = 0, rel1 = 0, W0 = 0, H0 = 0, S = 0;                 /* grand écran */
   var mW = 0, mH = 0, mS = 120;                                   /* mobile */
   var target = null, imgs = [], cv = null;
@@ -734,7 +734,8 @@
     mode = (f && getComputedStyle(f).display !== "none") ? "d" : (m && getComputedStyle(m).display !== "none") ? "m" : "";
     if (!mode) { run.style.setProperty("--run", "0px"); return; }
     target = mode === "d" ? f : m; imgs = [].slice.call(target.querySelectorAll("img")); cv = target.querySelector(".hero-sig");
-    var vh = window.innerHeight, hb = bar ? bar.offsetHeight : 64;
+    if (vhW !== window.innerWidth) { vhW = window.innerWidth; vh0 = window.innerHeight; }
+    var vh = vh0, hb = bar ? bar.offsetHeight : 64;
     if (mode === "d") {
       f.style.width = ""; f.style.height = ""; f.style.top = "0px";
       var tr = text.getBoundingClientRect(), kr = kick.getBoundingClientRect(), dr = duo.getBoundingClientRect(), r = f.getBoundingClientRect();
@@ -765,12 +766,12 @@
   }
   var tk = false;
   window.addEventListener("scroll", function () { if (!tk) { tk = true; requestAnimationFrame(function () { tk = false; update(); }); } }, { passive: true });
-  function init() { var y = window.scrollY; measure(); if (signed && target) { target.classList.remove("signed"); signed = false; } cur = -1; update(); }
-  window.addEventListener("resize", function () { if (window.innerWidth !== lastW) init(); });
+  function init(full) { var pm = mode; measure(); if (full === true || pm !== mode) { if (signed && target) { target.classList.remove("signed"); signed = false; } cur = -1; } update(); }
+  window.addEventListener("resize", function () { if (window.innerWidth !== lastW) init(true); });
   window.addEventListener("load", init);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(init);
   if (window.ResizeObserver) { var lastH = 0; new ResizeObserver(function () { if (mode === "d" && Math.abs(text.offsetHeight - lastH) > 2) { lastH = text.offsetHeight; measure(); update(); } }).observe(text); }
-  init();
+  init(true);
 })();
 
 (function () {
@@ -786,8 +787,8 @@
   if (hero && sf) { var pf = function () { hero.style.setProperty("--pf", (sf.offsetTop + 30) + "px"); }; pf(); window.addEventListener("resize", pf); window.addEventListener("load", pf); }
   /* Toujours arriver en haut d'une nouvelle page (sauf lien vers une section) */
   var touched = false; ["wheel", "touchstart", "keydown"].forEach(function (ev) { window.addEventListener(ev, function () { touched = true; }, { once: true, passive: true }); });
-  var toTop = function () { if (location.hash || touched) return; window.scrollTo(0, 0); var t = document.getElementById("top"); if (t && window.self !== window.top) { try { t.scrollIntoView({ block: "start" }); } catch (e) {} } };
-  window.addEventListener("pagereveal", toTop); window.addEventListener("load", toTop);
+  var toTop = function () { if (location.hash || touched) return; if (window.scrollY > 0) window.scrollTo(0, 0); var t = document.getElementById("top"); if (t && window.self !== window.top) { try { t.scrollIntoView({ block: "start" }); } catch (e) {} } };
+  window.addEventListener("pagereveal", toTop);
   /* La frise sportive se dessine à l'arrivée */
   var band = document.querySelector(".sport-band");
   if (band) { if (!("IntersectionObserver" in window) || reduce) band.classList.add("in"); else new IntersectionObserver(function (en, o) { if (en[0].isIntersecting) { band.classList.add("in"); o.disconnect(); } }, { threshold: .35 }).observe(band); }

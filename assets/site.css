@@ -633,8 +633,8 @@ body { animation: pagein 450ms ease both; }
 .egg .back { place-items: center; justify-items: center; }
 .egg .dots { display: flex; gap: 8px; }
 .egg .dots i { width: 10px; height: 10px; border-radius: 50% !important; background: var(--encre); }
-@keyframes egg-buzz { 0%, 86%, 100% { transform: rotate(0); } 88% { transform: rotate(-2.5deg) translateX(-1px); } 90% { transform: rotate(2.5deg) translateX(1px); } 92% { transform: rotate(-2deg); } 94% { transform: rotate(2deg); } 96% { transform: rotate(-1deg); } }
-.egg button:not([aria-expanded="true"]) .back { animation: egg-buzz 3.2s ease-in-out 1.5s infinite; }
+@keyframes egg-buzz { 0%, 64%, 100% { transform: rotate(0); } 68% { transform: rotate(-3deg) translateX(-1px); } 73% { transform: rotate(3deg) translateX(1px); } 78% { transform: rotate(-2.5deg); } 83% { transform: rotate(2.5deg); } 88% { transform: rotate(-1.5deg); } 93% { transform: rotate(1deg); } }
+.egg button:not([aria-expanded="true"]) .back { animation: egg-buzz 1.6s ease-in-out .8s infinite; }
 .egg button:hover .back { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .egg button .back { animation: none !important; } }
 .egg .front { background: var(--encre); color: var(--galet); transform: rotateY(180deg); }
