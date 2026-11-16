@@ -736,3 +736,5 @@ body { animation: pagein 450ms ease both; }
 .lb button { position: absolute; background: #F3F3EF; color: #111110; border: 0; border-radius: 6px; width: 44px; height: 44px; font-size: 22px; cursor: pointer; }
 .lb .lb-x { top: max(16px, env(safe-area-inset-top)); right: 16px; }
 .lb .lb-p { left: 16px; top: 50%; } .lb .lb-n { right: 16px; top: 50%; }
+
+.hero .pin-run { position: relative; z-index: 2; }
